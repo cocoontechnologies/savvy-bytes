@@ -1,0 +1,17 @@
+---
+const { project } = Astro.props
+---
+
+<div id=`${project.id}` class="project-card flex min-w-[70vw] bg-black/20 border border-secondary/20 min-h-[700px] max-h-full rounded-lg snap-center">
+
+    <div class="flex flex-1 flex-col p-12">
+        <h2>{project.title}</h2>    
+        <div class="flex">tags</div>
+        
+        <p>{project.description}</p>
+    </div>
+
+    <div class="flex flex-1 flex-col p-12 pb-0">
+        images
+    </div>
+</div>
