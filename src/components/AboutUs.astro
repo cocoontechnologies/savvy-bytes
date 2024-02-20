@@ -2,16 +2,21 @@
 import AboutUsSection from './AboutUsSection.astro';
 ---
 
-<div id="about-us" class="flex flex-col min-h-screen items-center w-full gap-20 scroll-mt-10">
+<div id="about-us" class="flex flex-col min-h-screen items-center w-full gap-20 scroll-mt-10 relative pt-36">
 
-        <h2 class="text-6xl font-lexend">About The Team</h2>
+    <div class="absolute top-0 self-center w-1/2 h-screen opacity-[0.02] !bg-contain !bg-no-repeat" style={{background: 'url(/images/logo.png)'}}>
+        <div class="h-full w-full bg-gradient-to-b from-primary"></div>
+        <!-- <img class="w-full" src="/images/logo.png" alt=""> -->
+    </div>
 
-        <div class="flex flex-col w-full px-[256px] gap-14">
+    <h2 class="text-6xl font-lexend font-bold text-gradient-to-b z-10">About The Team</h2>
 
-            <AboutUsSection />
-            <AboutUsSection flipped/>
-            <AboutUsSection />
+    <div class="flex flex-col w-full px-[256px] gap-14 z-10">
 
-        </div>
+        <AboutUsSection />
+        <AboutUsSection flipped/>
+        <AboutUsSection />
+
+    </div>
 
 </div>
