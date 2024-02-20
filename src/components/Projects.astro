@@ -24,7 +24,7 @@ const tempData = [
 ]
 ---
 
-<div class="flex flex-col min-h-screen items-center">
+<div id="projects" class="flex flex-col min-h-screen items-center scroll-mt-10">
     <div class="container-snap flex gap-5 p-5 px-[256px] w-full overflow-auto snap-x scroll-p-[100px]">
         {
             tempData.map((data, index) => <ProjectCard project={data}/>)
@@ -84,6 +84,10 @@ const tempData = [
         setActiveButton(selectedProject);
     })
 
+    window.addEventListener('load', () => {
+        setActiveButton(projectCardsArray[0])
+    });
+
     function setActiveButton(project) {
         const activeButton = document.querySelector('.active-button');
         activeButton?.classList.remove(...buttonActiveStateClasses);
@@ -91,6 +95,5 @@ const tempData = [
         const selectedButton = projectButtonsArray.find(projectButton => projectButton.dataset.id == project.id);
         selectedButton.classList.add(...buttonActiveStateClasses)
     }
-
 
 </script>

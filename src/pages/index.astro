@@ -2,9 +2,21 @@
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import Projects from '../components/Projects.astro';
+import AboutUs from '../components/AboutUs.astro';
 ---
 
-<Layout title="Wasaaap">
+<Layout title="Savvy Bytes">
+	<div class="fixed right-10 top-10 flex flex-col gap-2 z-[99999]">
+		<a href="#home">Home</a>
+		<a href="#projects">Our Works</a>
+		<a href="#about-us">About Us</a>
+	</div>
+
+	<img class="fixed w-[128px] h-auto left-10 top-10 flex flex-col gap-2 z-[99999]" src="/images/logo.png" alt="">
+
 	<Hero />
 	<Projects />
+	<AboutUs />
 </Layout>
+
+
