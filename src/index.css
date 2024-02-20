@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .text-gradient-to-b {
+        @apply bg-clip-text text-transparent bg-gradient-to-b from-secondary to-secondary/50
+    }
+
+    .text-gradient-to-r {
+        @apply bg-clip-text text-transparent bg-gradient-to-r from-secondary/30 via-30% via-white to-secondary/30
+    }
+}
