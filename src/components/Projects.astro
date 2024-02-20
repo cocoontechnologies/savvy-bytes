@@ -1,0 +1,99 @@
+---
+import ProjectCard from './ProjectCard.astro'
+import ProjectButton from './ProjectButton.astro'
+
+const tempData = [
+    {
+        id: 'project-1',
+        title: 'Project 1',
+        description: 'Desc 1',
+        label: 'Proj 1'
+    },
+    {
+        id: 'project-2',
+        title: 'Project 2',
+        description: 'Desc 2',
+        label: 'Proj 2'
+    },
+    {
+        id: 'project-3',
+        title: 'Project 3',
+        description: 'Desc 3',
+        label: 'Proj 3'
+    },
+]
+---
+
+<div id="projects" class="flex flex-col min-h-screen items-center scroll-mt-10">
+    <div class="container-snap flex gap-5 p-5 px-[256px] w-full overflow-auto snap-x scroll-p-[100px]">
+        {
+            tempData.map((data, index) => <ProjectCard project={data}/>)
+        }
+    </div>
+
+    <div class="flex gap-3">
+        {
+            tempData.map((data, index) => <ProjectButton label={data.label} dataId={data.id} />)
+        }
+    </div>
+
+</div>
+
+<style>
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .container-snap::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .container-snap {
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+    }
+
+</style>
+
+<script>
+    const projectCards = document.querySelectorAll('.project-card');
+    const projectCardsArray = Array.from(projectCards);
+
+    const projectButtons = document.querySelectorAll('.project-button');
+    const projectButtonsArray = Array.from(projectButtons);
+
+    const containerSnap = document.querySelector('.container-snap');
+
+    const buttonActiveStateClasses = [
+        'active-button',
+        '!text-secondary',
+        '!from-[#5B8FF3]',
+        '!to-[#2D74F3]',
+        'shadow-[0_20px_50px_#2D74F330]' 
+    ]
+
+    projectButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            const project = document.querySelector(`#${button.dataset.id}`);
+            setActiveButton(project);
+            project.scrollIntoView({behavior: 'smooth', inline: 'nearest', block: 'nearest'});
+        })
+    })
+
+    containerSnap.addEventListener('scrollend', (e) => {
+        const buttonxArray = projectCardsArray.map(projectCard => projectCard.getBoundingClientRect().x)
+        const selectedProject = projectCardsArray.find(projectCard => projectCard.getBoundingClientRect().x == Math.min(...buttonxArray.filter(buttonX => buttonX>=0)));
+        setActiveButton(selectedProject);
+    })
+
+    window.addEventListener('load', () => {
+        setActiveButton(projectCardsArray[0])
+    });
+
+    function setActiveButton(project) {
+        const activeButton = document.querySelector('.active-button');
+        activeButton?.classList.remove(...buttonActiveStateClasses);
+
+        const selectedButton = projectButtonsArray.find(projectButton => projectButton.dataset.id == project.id);
+        selectedButton.classList.add(...buttonActiveStateClasses)
+    }
+
+</script>
