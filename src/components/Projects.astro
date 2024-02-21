@@ -57,7 +57,7 @@ const tempData = [
     const projectCards = document.querySelectorAll('.project-card');
     const projectCardsArray = Array.from(projectCards);
 
-    const projectButtons = document.querySelectorAll('.project-button');
+    const projectButtons = document.querySelectorAll('.project-button') as NodeListOf<HTMLButtonElement>;
     const projectButtonsArray = Array.from(projectButtons);
 
     const containerSnap = document.querySelector('.container-snap');

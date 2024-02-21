@@ -1,14 +1,57 @@
-<div id="home" class="flex flex-col items-center justify-center min-h-[80vh] gap-12 relative pt-28">
+<div
+  id="home"
+  class="flex flex-col items-center justify-center min-h-[80vh] gap-12 relative pt-28"
+>
+  <canvas id="dust" class="w-full h-screen absolute inset-0"></canvas>
 
-    <img class="absolute top-0 left-0 w-full pointer-events-none" src="/images/dust.png" alt="">
-    <img class="absolute top-0 left-0 w-full pointer-events-none" src="/images/light-rays.png" alt="">
+  <div class="flex flex-col font-lexend font-bold text-6xl items-center z-10">
+    <h2
+      class="bg-clip-text text-transparent bg-gradient-to-r from-secondary/30 via-30% via-white to-secondary/30"
+    >
+      The motive to make your
+    </h2>
+    <h2 class="text-tertiary">Business</h2>
+  </div>
 
-    <div class="flex flex-col font-lexend font-bold text-6xl items-center z-10">
-        <h2 class="bg-clip-text text-transparent bg-gradient-to-r from-secondary/30 via-30% via-white to-secondary/30">The motive to make your</h2>
-        <h2 class="text-tertiary">Business</h2>
-    </div>
+  <p class="text-base text-secondary/50 w-[448px] self-center text-center">
+    We build websites, web apps, mobile apps, and software solutions to help
+    your business grow.
+  </p>
 
-    <p class="text-base text-secondary/50 w-[448px] self-center text-center">We build websites, web apps, mobile apps, and software solutions to help your business grow.</p>
-
-    <button>Get started today</button>
+  <button>Get started today</button>
 </div>
+
+<script>
+  const canvas = document.querySelector("#dust") as HTMLCanvasElement,
+    ctx = canvas.getContext("2d");
+
+  function setCanvasDimensions() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  setCanvasDimensions();
+  window.addEventListener("resize", setCanvasDimensions);
+
+  // function createRadialGradient() {
+  //   const gradient = ctx.createRadialGradient(1000, 0, 0, 1000, 0, 150);
+  //   gradient.addColorStop(0, `rgba(255, 255, 255, 0.10)`);
+  //   gradient.addColorStop(1, "transparent");
+  //   ctx.fillStyle = gradient;
+  //   ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+  // }
+
+  // function animate() {
+  //   ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+  //   ctx.setTransform(pos, 0, -2, 5, 0, 0);
+  //   pos -= 0.001
+  //   createRadialGradient();
+  //   requestAnimationFrame(animate);
+
+  //   // ctx.setTransform(1, 0, 0, 1, 0, 0)
+  //   // createRadialGradient()
+  //   //ctx.fillRect(0, 0, window.innerWidth, window.innerHeight)
+  // }
+
+  // animate();
+</script>
