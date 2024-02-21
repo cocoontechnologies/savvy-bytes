@@ -1,39 +1,41 @@
 ---
 import ProjectCard from './ProjectCard.astro'
 import ProjectButton from './ProjectButton.astro'
-
-const tempData = [
-    {
-        id: 'project-1',
-        title: 'Project 1',
-        description: 'Desc 1',
-        label: 'Proj 1'
-    },
-    {
-        id: 'project-2',
-        title: 'Project 2',
-        description: 'Desc 2',
-        label: 'Proj 2'
-    },
-    {
-        id: 'project-3',
-        title: 'Project 3',
-        description: 'Desc 3',
-        label: 'Proj 3'
-    },
-]
+import { projects } from './../data/projects.js'
 ---
 
-<div id="projects" class="flex flex-col min-h-screen items-center scroll-mt-10">
-    <div class="container-snap flex gap-5 p-5 px-[256px] w-full overflow-auto snap-x scroll-p-[100px]">
+<style>
+
+.mask-to-r {
+    -webkit-mask: linear-gradient(90deg, transparent, #090B0E 0% 95%, transparent);
+    mask: linear-gradient(90deg, transparent, #090B0E 0% 95%, transparent);
+}
+
+.mask-to-l {
+    -webkit-mask: linear-gradient(-90deg, transparent, #090B0E 0% 95%, transparent);
+    mask: linear-gradient(-90deg, transparent, #090B0E 0% 95%, transparent);
+}
+
+</style>
+
+<div id="projects" class="flex flex-col justify-end min-h-screen items-center -scroll-mt-10 relative">
+    <div class="mask-to-r absolute top-0 bottom-0 left-0 w-[256px] bg-gradient-to-r from-primary backdrop-blur-sm z-[50]">
+            
+    </div>
+
+    <div class="mask-to-l absolute top-0 bottom-0 right-0 w-[256px] bg-gradient-to-l from-primary backdrop-blur-sm z-[50]">
+        
+    </div>
+
+    <div class="container-snap flex items-center gap-5 p-5 px-[256px] w-full overflow-auto snap-x">
         {
-            tempData.map((data, index) => <ProjectCard project={data}/>)
+            projects.map((project, index) => <ProjectCard project={project}/>)
         }
     </div>
 
     <div class="flex gap-3">
         {
-            tempData.map((data, index) => <ProjectButton label={data.label} dataId={data.id} />)
+            projects.map((project, index) => <ProjectButton label={project.label} dataId={project.id} />)
         }
     </div>
 
@@ -73,7 +75,7 @@ const tempData = [
     projectButtons.forEach(button => {
         button.addEventListener('click', (e) => {
             const project = document.querySelector(`#${button.dataset.id}`);
-            setActiveButton(project);
+            setActiveProject(project);
             project.scrollIntoView({behavior: 'smooth', inline: 'nearest', block: 'nearest'});
         })
     })
@@ -81,14 +83,39 @@ const tempData = [
     containerSnap.addEventListener('scrollend', (e) => {
         const buttonxArray = projectCardsArray.map(projectCard => projectCard.getBoundingClientRect().x)
         const selectedProject = projectCardsArray.find(projectCard => projectCard.getBoundingClientRect().x == Math.min(...buttonxArray.filter(buttonX => buttonX>=0)));
-        setActiveButton(selectedProject);
+        setActiveProject(selectedProject);
+        toggleDisableButtons(false);
+
+        const activeProject = document.querySelector('.active-project');
+        activeProject?.classList.remove('active-project');
+        activeProject?.classList.remove('!h-[80vh]');
+
+        
+        selectedProject.classList.add('!h-[80vh]');
+        selectedProject.classList.add('active-project')
     })
 
+    containerSnap.addEventListener('scroll', (e) => {
+        toggleDisableButtons(true);
+    }, {passive: true})
+
     window.addEventListener('load', () => {
-        setActiveButton(projectCardsArray[0])
+        setActiveProject(projectCardsArray[0])        
+        projectCardsArray[0].classList.add('!h-[80vh]');
+        projectCardsArray[0].classList.add('active-project')
     });
 
-    function setActiveButton(project) {
+    function toggleDisableButtons(disable = true) {
+        projectButtonsArray.forEach(button => {
+            if(disable) {
+                button.disabled = true;
+            }else{
+                button.disabled = false;
+            }
+        })
+    }
+
+    function setActiveProject(project) {
         const activeButton = document.querySelector('.active-button');
         activeButton?.classList.remove(...buttonActiveStateClasses);
 
