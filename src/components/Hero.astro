@@ -2,155 +2,13 @@
   id="home"
   class="flex flex-col items-center justify-center min-h-[80vh] gap-12 relative pt-28"
 >
-  <div class="w-full h-screen absolute inset-0 overflow-hidden">
-    <svg
-      viewBox="0 0 1920 1080"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      id="rays"
-    >
-      <!-- 
-        filter="url(#backdrop_filter)" 
-        transform="rotate(45) translate(0, -512)"
-        transform="rotate(16) translate(0, -512)"
-      -->
-      <g opacity="0.5" filter="url(#backdrop_filter)">
-        <ellipse
-          id="ray-1"
-          cx="1080"
-          cy="100"
-          rx="38.2126"
-          ry="907.146"
-          fill="url(#paint0_linear_408_966)"
-          style="--index: 1;"
-          class="animate-rays rays"
-          fill-opacity="0.25"></ellipse>
-        <ellipse
-          id="ray-2"
-          cx="1080"
-          cy="100"
-          rx="86.287"
-          ry="907.146"
-          fill="url(#paint1_linear_408_966)"
-          style="--index: 2;"
-          class="animate-rays rays"
-          fill-opacity="0.5"></ellipse>
-        <ellipse
-          id="ray-3"
-          cx="1080"
-          cy="100"
-          rx="38.2126"
-          ry="907.146"
-          fill="url(#paint2_linear_408_966)"
-          style="--index: 3;"
-          class="animate-rays rays"
-          fill-opacity="0.5"></ellipse>
-        <ellipse
-          id="ray-4"
-          cx="1080"
-          cy="100"
-          rx="30"
-          ry="900"
-          fill="url(#paint3_linear_408_966)"
-          style="--index: 4;"
-          class="animate-rays rays"
-          fill-opacity="0.75"></ellipse>
-        <ellipse
-          id="ray-5"
-          cx="1080"
-          cy="100"
-          rx="26.7307"
-          ry="850"
-          style="--index: 5;"
-          class="animate-rays rays"
-          fill="white"></ellipse>
-        <ellipse
-          id="ray-6"
-          cx="1080"
-          cy="100"
-          rx="26.7307"
-          ry="907.146"
-          style="--index: 6;"
-          class="animate-rays rays"
-          fill="white"></ellipse>
-      </g>
-      <defs>
-        <!-- <filter
-          id="backdrop_filter"
-          filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
-        >
-          <feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood>
-          <feBlend
-            mode="normal"
-            in="SourceGraphic"
-            in2="BackgroundImageFix"
-            result="shape"></feBlend>
-          <feGaussianBlur stdDeviation="48"></feGaussianBlur>
-        </filter> -->
-        <linearGradient
-          id="paint0_linear_408_966"
-          x1="166.857"
-          y1="256.737"
-          x2="192.41"
-          y2="2017.5"
-          gradientUnits="userSpaceOnUse"
-        >
-          <stop stop-color="white"></stop>
-          <stop offset="1" stop-color="#0B0829" stop-opacity="0"></stop>
-        </linearGradient>
-        <linearGradient
-          id="paint1_linear_408_966"
-          x1="547.357"
-          y1="256.738"
-          x2="558.675"
-          y2="2017.8"
-          gradientUnits="userSpaceOnUse"
-        >
-          <stop stop-color="white"></stop>
-          <stop offset="1" stop-color="#0B0829" stop-opacity="0"></stop>
-        </linearGradient>
-        <linearGradient
-          id="paint2_linear_408_966"
-          x1="927.857"
-          y1="256.737"
-          x2="953.409"
-          y2="2017.5"
-          gradientUnits="userSpaceOnUse"
-        >
-          <stop stop-color="white"></stop>
-          <stop offset="1" stop-color="#0B0829" stop-opacity="0"></stop>
-        </linearGradient>
-        <linearGradient
-          id="paint3_linear_408_966"
-          x1="1252.87"
-          y1="121.202"
-          x2="1294.74"
-          y2="2144.6"
-          gradientUnits="userSpaceOnUse"
-        >
-          <stop stop-color="white"></stop>
-          <stop offset="1" stop-color="#0B0829" stop-opacity="0"></stop>
-        </linearGradient>
-        <linearGradient
-          id="paint4_linear_408_966"
-          x1="1875.87"
-          y1="256.737"
-          x2="1912.39"
-          y2="2017.11"
-          gradientUnits="userSpaceOnUse"
-        >
-          <stop stop-color="white"></stop>
-          <stop offset="1" stop-color="white" stop-opacity="0"></stop>
-        </linearGradient>
-      </defs>
-    </svg>
-  </div>
+  <div class="w-full h-screen absolute inset-0 overflow-hidden"></div>
 
-  <canvas id="dust" class="w-full h-screen absolute inset-0"></canvas>
+  <canvas id="canvas" class="w-full h-screen absolute inset-0 blur-md scale-110 bg-gradient-to-bl from-white/10 from-0% to-transparent to-40%"></canvas>
 
-  <div class="flex flex-col font-lexend font-bold text-6xl items-center z-10">
-    <h2 class="bg-clip-text text-gradient-to-r">The motive to make your</h2>
+  <div class="flex flex-col font-lexend font-bold text-6xl items-center">
+    <!-- <h2 class="bg-clip-text text-gradient-to-r">The motive to make your</h2> -->
+    <h2 class="mix-blend-color-dodge text-gray-300">The motive to make your</h2>
     <h2 class="text-tertiary">Business</h2>
   </div>
 
@@ -163,59 +21,99 @@
 </div>
 
 <script>
-  const canvas = document.querySelector("#dust") as HTMLCanvasElement,
-    raysContainer = document.querySelector("#rays") as SVGElement,
-    rays = document.querySelectorAll(".rays") as NodeListOf<SVGEllipseElement>,
-    ctx = canvas.getContext("2d");
+  type Ray = {
+    x: number;
+    y: number;
+    isFading: boolean;
+    opacity: number;
+    lineWidth: number;
+    threshold: number;
+  };
+
+  const canvas = document.querySelector("#canvas") as HTMLCanvasElement,
+    ctx = canvas.getContext("2d"),
+    counter = 64,
+    step = 0.001,
+    rays: Array<Ray> = [];
+
+  const source = {
+    x: window.innerWidth,
+    y: -(window.innerHeight * 0.75),
+  };
 
   function setCanvasDimensions() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
   }
 
-  function setRaysDimensions() {
-    raysContainer.setAttribute(
-      "viewBox",
-      `0 0 ${window.innerWidth} ${window.innerHeight * 2}`
-    );
+  function getRandomInt(min: number, max: number) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-  const pos = [
-    '45vw'
-  ];
+  function createRay() {
+    const x = Math.floor(getRandomInt(-1920, 1920) * Math.random()),
+      y = Math.floor(1920 * Math.random() + 1024),
+      width = Math.floor(Math.random() * 256);
 
-  rays.forEach((ray) => {
-    const index = ray;
-    console.log(ray.getAttribute("cx"));
-  });
+    rays.push({
+      x,
+      y,
+      isFading: false,
+      opacity: 0,
+      lineWidth: width,
+      threshold: Math.random() * 0.5,
+    });
+  }
 
-  setCanvasDimensions();
-  setRaysDimensions();
+  function updateRay(ray: Ray) {
+    if (ray.opacity > ray.threshold) ray.isFading = true;
+
+    if (ray.opacity < 0 && ray.isFading) ray.isFading = false;
+
+    if (ray.isFading) {
+      ray.opacity -= step;
+    } else {
+      ray.opacity += step;
+    }
+  }
+
+  function drawRay(ray: Ray) {
+    ctx.beginPath();
+    ctx.moveTo(source.x, source.y);
+    ctx.lineTo(source.x, source.y);
+    ctx.lineTo(ray.x, ray.y);
+
+    const gradient = ctx.createLinearGradient(source.x, source.y, ray.x, ray.y);
+    gradient.addColorStop(0, `rgba(255, 255, 255, ${ray.opacity})`);
+    gradient.addColorStop(0.5, "transparent");
+
+    ctx.lineWidth = ray.lineWidth;
+    ctx.strokeStyle = gradient;
+    ctx.stroke();
+  }
 
   window.addEventListener("resize", () => {
+    source.x = window.innerWidth;
+    source.y = window.innerHeight;
+
     setCanvasDimensions();
-    setRaysDimensions();
   });
 
-  // function createRadialGradient() {
-  //   const gradient = ctx.createRadialGradient(1000, 0, 0, 1000, 0, 150);
-  //   gradient.addColorStop(0, `rgba(255, 255, 255, 0.10)`);
-  //   gradient.addColorStop(1, "transparent");
-  //   ctx.fillStyle = gradient;
-  //   ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
-  // }
+  while (rays.length < counter) {
+    createRay();
+  }
 
-  // function animate() {
-  //   ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-  //   ctx.setTransform(pos, 0, -2, 5, 0, 0);
-  //   pos -= 0.001
-  //   createRadialGradient();
-  //   requestAnimationFrame(animate);
+  function animate() {
+    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
-  //   // ctx.setTransform(1, 0, 0, 1, 0, 0)
-  //   // createRadialGradient()
-  //   //ctx.fillRect(0, 0, window.innerWidth, window.innerHeight)
-  // }
+    rays.forEach((ray) => {
+      updateRay(ray)
+      drawRay(ray)
+    })
 
-  // animate();
+    requestAnimationFrame(animate)
+  }
+
+  setCanvasDimensions();
+  animate();
 </script>
