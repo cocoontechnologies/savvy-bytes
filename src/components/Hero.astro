@@ -1,14 +1,119 @@
-<div id="home" class="flex flex-col items-center justify-center min-h-[80vh] gap-12 relative pt-28">
+<div
+  id="home"
+  class="flex flex-col items-center justify-center min-h-[80vh] gap-12 relative pt-28"
+>
+  <div class="w-full h-screen absolute inset-0 overflow-hidden"></div>
 
-    <img class="absolute top-0 left-0 w-full pointer-events-none" src="/images/dust.png" alt="">
-    <img class="absolute top-0 left-0 w-full pointer-events-none" src="/images/light-rays.png" alt="">
+  <canvas id="canvas" class="w-full h-screen absolute inset-0 blur-md scale-110 bg-gradient-to-bl from-white/10 from-0% to-transparent to-40%"></canvas>
 
-    <div class="flex flex-col font-lexend font-bold text-6xl items-center z-10">
-        <h2 class="bg-clip-text text-gradient-to-r">The motive to make your</h2>
-        <h2 class="text-tertiary">Business</h2>
-    </div>
+  <div class="flex flex-col font-lexend font-bold text-6xl items-center">
+    <!-- <h2 class="bg-clip-text text-gradient-to-r">The motive to make your</h2> -->
+    <h2 class="mix-blend-color-dodge text-gray-300">The motive to make your</h2>
+    <h2 class="text-tertiary">Business</h2>
+  </div>
 
-    <p class="text-base text-secondary/50 w-[448px] self-center text-center">We build websites, web apps, mobile apps, and software solutions to help your business grow.</p>
+  <p class="text-base text-secondary/50 w-[448px] self-center text-center">
+    We build websites, web apps, mobile apps, and software solutions to help
+    your business grow.
+  </p>
 
-    <button>Get started today</button>
+  <button>Get started today</button>
 </div>
+
+<script>
+  type Ray = {
+    x: number;
+    y: number;
+    isFading: boolean;
+    opacity: number;
+    lineWidth: number;
+    threshold: number;
+  };
+
+  const canvas = document.querySelector("#canvas") as HTMLCanvasElement,
+    ctx = canvas.getContext("2d"),
+    counter = 64,
+    step = 0.001,
+    rays: Array<Ray> = [];
+
+  const source = {
+    x: window.innerWidth,
+    y: -(window.innerHeight * 0.75),
+  };
+
+  function setCanvasDimensions() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  function getRandomInt(min: number, max: number) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  function createRay() {
+    const x = Math.floor(getRandomInt(-1920, 1920) * Math.random()),
+      y = Math.floor(1920 * Math.random() + 1024),
+      width = Math.floor(Math.random() * 256);
+
+    rays.push({
+      x,
+      y,
+      isFading: false,
+      opacity: 0,
+      lineWidth: width,
+      threshold: Math.random() * 0.5,
+    });
+  }
+
+  function updateRay(ray: Ray) {
+    if (ray.opacity > ray.threshold) ray.isFading = true;
+
+    if (ray.opacity < 0 && ray.isFading) ray.isFading = false;
+
+    if (ray.isFading) {
+      ray.opacity -= step;
+    } else {
+      ray.opacity += step;
+    }
+  }
+
+  function drawRay(ray: Ray) {
+    ctx.beginPath();
+    ctx.moveTo(source.x, source.y);
+    ctx.lineTo(source.x, source.y);
+    ctx.lineTo(ray.x, ray.y);
+
+    const gradient = ctx.createLinearGradient(source.x, source.y, ray.x, ray.y);
+    gradient.addColorStop(0, `rgba(255, 255, 255, ${ray.opacity})`);
+    gradient.addColorStop(0.5, "transparent");
+
+    ctx.lineWidth = ray.lineWidth;
+    ctx.strokeStyle = gradient;
+    ctx.stroke();
+  }
+
+  window.addEventListener("resize", () => {
+    source.x = window.innerWidth;
+    source.y = window.innerHeight;
+
+    setCanvasDimensions();
+  });
+
+  while (rays.length < counter) {
+    createRay();
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+    rays.forEach((ray) => {
+      updateRay(ray)
+      drawRay(ray)
+    })
+
+    requestAnimationFrame(animate)
+  }
+
+  setCanvasDimensions();
+  animate();
+</script>
