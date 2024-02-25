@@ -11,30 +11,3 @@
         @apply bg-clip-text text-transparent bg-gradient-to-r from-secondary/30 via-30% via-white to-secondary/30
     }
 }
-
-.animate-rays {
-    /* transform: rotate(45, 0, 0); */
-    animation: move calc(var(--index) * 4s) linear infinite;
-}
-
-@keyframes move {
-    0% {
-        /* transform: translateX(calc(calc(var(--index) * 1px) * 50vw)); */
-        /* transform: translateX(calc(var(--index) * 5vw)); */
-        opacity: 0;
-    }
-
-    10% {
-        opacity: 1;
-    }
-
-    90% {
-        opacity: 1;
-    }
-
-    100% {
-        /* transform: translateX(-50vw); */
-        /* transform: translateX(calc(calc(var(--index) * 10vw) - 72vw)); */
-        opacity: 0;
-    }
-}

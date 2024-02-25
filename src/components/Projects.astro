@@ -1,126 +1,155 @@
 ---
-import ProjectCard from './ProjectCard.astro'
-import ProjectButton from './ProjectButton.astro'
-import { projects } from './../data/projects.js'
+import ProjectCard from "./ProjectCard.astro";
+import ProjectButton from "./ProjectButton.astro";
+import { projects } from "./../data/projects.js";
 ---
 
 <style>
+  .mask-to-r {
+    -webkit-mask: linear-gradient(
+      90deg,
+      transparent,
+      #090b0e 0% 95%,
+      transparent
+    );
+    mask: linear-gradient(90deg, transparent, #090b0e 0% 95%, transparent);
+  }
 
-.mask-to-r {
-    -webkit-mask: linear-gradient(90deg, transparent, #090B0E 0% 95%, transparent);
-    mask: linear-gradient(90deg, transparent, #090B0E 0% 95%, transparent);
-}
-
-.mask-to-l {
-    -webkit-mask: linear-gradient(-90deg, transparent, #090B0E 0% 95%, transparent);
-    mask: linear-gradient(-90deg, transparent, #090B0E 0% 95%, transparent);
-}
-
+  .mask-to-l {
+    -webkit-mask: linear-gradient(
+      -90deg,
+      transparent,
+      #090b0e 0% 95%,
+      transparent
+    );
+    mask: linear-gradient(-90deg, transparent, #090b0e 0% 95%, transparent);
+  }
 </style>
 
-<div id="projects" class="flex flex-col justify-end min-h-screen items-center -scroll-mt-10 relative">
-    <div class="mask-to-r absolute top-0 bottom-0 left-0 w-[256px] bg-gradient-to-r from-primary backdrop-blur-sm z-[50]">
-            
-    </div>
+<div
+  id="projects"
+  class="flex flex-col justify-end min-h-screen items-center -scroll-mt-10 relative"
+>
+  <div
+    class="mask-to-r absolute top-0 bottom-0 left-0 w-[256px] bg-gradient-to-r from-primary backdrop-blur-sm z-[50]"
+  >
+  </div>
 
-    <div class="mask-to-l absolute top-0 bottom-0 right-0 w-[256px] bg-gradient-to-l from-primary backdrop-blur-sm z-[50]">
-        
-    </div>
+  <div
+    class="mask-to-l absolute top-0 bottom-0 right-0 w-[256px] bg-gradient-to-l from-primary backdrop-blur-sm z-[50]"
+  >
+  </div>
 
-    <div class="container-snap flex items-center gap-5 p-5 px-[256px] w-full overflow-auto snap-x">
-        {
-            projects.map((project, index) => <ProjectCard project={project}/>)
-        }
-    </div>
+  <div
+    class="container-snap flex items-center gap-5 p-5 px-[256px] w-full overflow-auto snap-x"
+  >
+    {projects.map((project, index) => <ProjectCard project={project} />)}
+  </div>
 
-    <div class="flex gap-3">
-        {
-            projects.map((project, index) => <ProjectButton label={project.label} dataId={project.id} />)
-        }
-    </div>
-
+  <div class="flex gap-3">
+    {
+      projects.map((project, index) => (
+        <ProjectButton label={project.label} dataId={project.id} />
+      ))
+    }
+  </div>
 </div>
 
 <style>
-    /* Hide scrollbar for Chrome, Safari and Opera */
-    .container-snap::-webkit-scrollbar {
-        display: none;
-    }
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .container-snap::-webkit-scrollbar {
+    display: none;
+  }
 
-    /* Hide scrollbar for IE, Edge and Firefox */
-    .container-snap {
-        -ms-overflow-style: none; /* IE and Edge */
-        scrollbar-width: none; /* Firefox */
-    }
-
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .container-snap {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
 </style>
 
 <script>
-    const projectCards = document.querySelectorAll('.project-card');
-    const projectCardsArray = Array.from(projectCards);
+  const projectCards = document.querySelectorAll(".project-card");
+  const projectCardsArray = Array.from(projectCards);
 
-    const projectButtons = document.querySelectorAll('.project-button') as NodeListOf<HTMLButtonElement>;
-    const projectButtonsArray = Array.from(projectButtons);
+  const projectButtons = document.querySelectorAll(
+    ".project-button"
+  ) as NodeListOf<HTMLButtonElement>;
+  const projectButtonsArray = Array.from(projectButtons);
 
-    const containerSnap = document.querySelector('.container-snap');
+  const containerSnap = document.querySelector(".container-snap");
 
-    const buttonActiveStateClasses = [
-        'active-button',
-        '!text-secondary',
-        '!from-[#5B8FF3]',
-        '!to-[#2D74F3]',
-        'shadow-[0_20px_50px_#2D74F330]' 
-    ]
+  const buttonActiveStateClasses = [
+    "active-button",
+    "!text-secondary",
+    "!from-[#5B8FF3]",
+    "!to-[#2D74F3]",
+    "shadow-[0_20px_50px_#2D74F330]",
+  ];
 
-    projectButtons.forEach(button => {
-        button.addEventListener('click', (e) => {
-            const project = document.querySelector(`#${button.dataset.id}`);
-            setActiveProject(project);
-            project.scrollIntoView({behavior: 'smooth', inline: 'nearest', block: 'nearest'});
-        })
-    })
-
-    containerSnap.addEventListener('scrollend', (e) => {
-        const buttonxArray = projectCardsArray.map(projectCard => projectCard.getBoundingClientRect().x)
-        const selectedProject = projectCardsArray.find(projectCard => projectCard.getBoundingClientRect().x == Math.min(...buttonxArray.filter(buttonX => buttonX>=0)));
-        setActiveProject(selectedProject);
-        toggleDisableButtons(false);
-
-        const activeProject = document.querySelector('.active-project');
-        activeProject?.classList.remove('active-project');
-        activeProject?.classList.remove('!h-[80vh]');
-
-        
-        selectedProject.classList.add('!h-[80vh]');
-        selectedProject.classList.add('active-project')
-    })
-
-    containerSnap.addEventListener('scroll', (e) => {
-        toggleDisableButtons(true);
-    }, {passive: true})
-
-    window.addEventListener('load', () => {
-        setActiveProject(projectCardsArray[0])        
-        projectCardsArray[0].classList.add('!h-[80vh]');
-        projectCardsArray[0].classList.add('active-project')
+  projectButtons.forEach((button) => {
+    button.addEventListener("click", (e) => {
+      const project = document.querySelector(`#${button.dataset.id}`);
+      setActiveProject(project);
+      project.scrollIntoView({
+        behavior: "smooth",
+        inline: "nearest",
+        block: "nearest",
+      });
     });
+  });
 
-    function toggleDisableButtons(disable = true) {
-        projectButtonsArray.forEach(button => {
-            if(disable) {
-                button.disabled = true;
-            }else{
-                button.disabled = false;
-            }
-        })
-    }
+  containerSnap.addEventListener("scrollend", (e) => {
+    const buttonxArray = projectCardsArray.map(
+      (projectCard) => projectCard.getBoundingClientRect().x
+    );
+    const selectedProject = projectCardsArray.find(
+      (projectCard) =>
+        projectCard.getBoundingClientRect().x ==
+        Math.min(...buttonxArray.filter((buttonX) => buttonX >= 0))
+    );
+    setActiveProject(selectedProject);
+    toggleDisableButtons(false);
 
-    function setActiveProject(project) {
-        const activeButton = document.querySelector('.active-button');
-        activeButton?.classList.remove(...buttonActiveStateClasses);
+    const activeProject = document.querySelector(".active-project");
+    activeProject?.classList.remove("active-project");
+    activeProject?.classList.remove("!h-[80vh]");
 
-        const selectedButton = projectButtonsArray.find(projectButton => projectButton.dataset.id == project.id);
-        selectedButton.classList.add(...buttonActiveStateClasses)
-    }
+    selectedProject.classList.add("!h-[80vh]");
+    selectedProject.classList.add("active-project");
+  });
 
+  containerSnap.addEventListener(
+    "scroll",
+    (e) => {
+      toggleDisableButtons(true);
+    },
+    { passive: true }
+  );
+
+  window.addEventListener("load", () => {
+    setActiveProject(projectCardsArray[0]);
+    projectCardsArray[0].classList.add("!h-[80vh]");
+    projectCardsArray[0].classList.add("active-project");
+  });
+
+  function toggleDisableButtons(disable = true) {
+    projectButtonsArray.forEach((button) => {
+      if (disable) {
+        button.disabled = true;
+      } else {
+        button.disabled = false;
+      }
+    });
+  }
+
+  function setActiveProject(project) {
+    const activeButton = document.querySelector(".active-button");
+    activeButton?.classList.remove(...buttonActiveStateClasses);
+
+    const selectedButton = projectButtonsArray.find(
+      (projectButton) => projectButton.dataset.id == project.id
+    );
+    selectedButton.classList.add(...buttonActiveStateClasses);
+  }
 </script>

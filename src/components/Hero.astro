@@ -1,13 +1,23 @@
+---
+import Button from "./Button.astro";
+---
+
 <div
   id="home"
   class="flex flex-col items-center justify-center min-h-[80vh] gap-12 relative pt-28"
 >
-  <div class="w-full h-screen absolute inset-0 overflow-hidden"></div>
+  <canvas
+    id="dust"
+    class="w-full h-screen absolute inset-0 pointer-events-none mix-blend-screen"
+  ></canvas>
+  <canvas
+    id="rays"
+    class="w-full h-screen absolute inset-0 scale-110 bg-gradient-to-bl from-white/20 from-0% to-transparent to-35% pointer-events-none blur-md"
+  ></canvas>
 
-  <canvas id="canvas" class="w-full h-screen absolute inset-0 blur-md scale-110 bg-gradient-to-bl from-white/10 from-0% to-transparent to-40%"></canvas>
-
-  <div class="flex flex-col font-lexend font-bold text-6xl items-center">
-    <!-- <h2 class="bg-clip-text text-gradient-to-r">The motive to make your</h2> -->
+  <div
+    class="flex flex-col font-lexend font-bold text-6xl items-center text-center"
+  >
     <h2 class="mix-blend-color-dodge text-gray-300">The motive to make your</h2>
     <h2 class="text-tertiary">Business</h2>
   </div>
@@ -17,7 +27,7 @@
     your business grow.
   </p>
 
-  <button>Get started today</button>
+  <Button>Get started today</Button>
 </div>
 
 <script>
@@ -30,26 +40,40 @@
     threshold: number;
   };
 
-  const canvas = document.querySelector("#canvas") as HTMLCanvasElement,
-    ctx = canvas.getContext("2d"),
-    counter = 64,
+  type Dust = {
+    x: number;
+    y: number;
+    speed: number;
+    radius: number;
+  };
+
+  const raysCanvas = document.querySelector("#rays") as HTMLCanvasElement,
+    raysCtx = raysCanvas.getContext("2d"),
+    raysCounter = 64,
     step = 0.001,
     rays: Array<Ray> = [];
+
+  const dustCanvas = document.querySelector("#dust") as HTMLCanvasElement,
+    dustCtx = dustCanvas.getContext("2d"),
+    dustsCounter = 256,
+    dusts: Array<Dust> = [];
 
   const source = {
     x: window.innerWidth,
     y: -(window.innerHeight * 0.75),
   };
 
-  function setCanvasDimensions() {
+  function setCanvasDimensions(canvas: HTMLCanvasElement) {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
   }
 
+  /** Helper functions */
   function getRandomInt(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
+  /* =================== Ray methods =================== */
   function createRay() {
     const x = Math.floor(getRandomInt(-1920, 1920) * Math.random()),
       y = Math.floor(1920 * Math.random() + 1024),
@@ -78,42 +102,91 @@
   }
 
   function drawRay(ray: Ray) {
-    ctx.beginPath();
-    ctx.moveTo(source.x, source.y);
-    ctx.lineTo(source.x, source.y);
-    ctx.lineTo(ray.x, ray.y);
+    raysCtx.beginPath();
+    raysCtx.moveTo(source.x, source.y);
+    raysCtx.lineTo(source.x, source.y);
+    raysCtx.lineTo(ray.x, ray.y);
 
-    const gradient = ctx.createLinearGradient(source.x, source.y, ray.x, ray.y);
+    const gradient = raysCtx.createLinearGradient(
+      source.x,
+      source.y,
+      ray.x,
+      ray.y
+    );
     gradient.addColorStop(0, `rgba(255, 255, 255, ${ray.opacity})`);
     gradient.addColorStop(0.5, "transparent");
 
-    ctx.lineWidth = ray.lineWidth;
-    ctx.strokeStyle = gradient;
-    ctx.stroke();
+    raysCtx.lineWidth = ray.lineWidth;
+    raysCtx.strokeStyle = gradient;
+    raysCtx.stroke();
+  }
+  /* =================== Ray methods =================== */
+
+  /* =================== Dust methods =================== */
+  function createDust() {
+    const x = Math.floor(
+        dustCanvas.width * 0.1 +
+          Math.random() * (dustCanvas.width - dustCanvas.width * 0.2)
+      ),
+      y = Math.floor(0);
+
+    dusts.push({
+      x,
+      y,
+      radius: parseFloat(Math.random().toFixed(2)) + 0.5,
+      speed: Math.random() * 1.5,
+    });
   }
 
-  window.addEventListener("resize", () => {
-    source.x = window.innerWidth;
-    source.y = window.innerHeight;
-
-    setCanvasDimensions();
-  });
-
-  while (rays.length < counter) {
-    createRay();
+  function updateDust(dust: Dust) {
+    if (dust.y > dustCanvas.height) {
+      dust.y = 0;
+    } else {
+      dust.y += dust.speed;
+    }
   }
+
+  function drawDust(dust: Dust) {
+    dustCtx.beginPath();
+    dustCtx.arc(dust.x, dust.y, dust.radius, 0, Math.PI * 2);
+    dustCtx.closePath();
+    dustCtx.fillStyle = `rgba(64, 64, 64, 0.5)`;
+    dustCtx.fill();
+  }
+  /* =================== Dust methods =================== */
 
   function animate() {
-    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    raysCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    dustCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
     rays.forEach((ray) => {
-      updateRay(ray)
-      drawRay(ray)
-    })
+      updateRay(ray);
+      drawRay(ray);
+    });
 
-    requestAnimationFrame(animate)
+    dusts.forEach((dust) => {
+      updateDust(dust);
+      drawDust(dust);
+    });
+
+    requestAnimationFrame(animate);
   }
 
-  setCanvasDimensions();
+  /** Initializers */
+  window.addEventListener("resize", () => {
+    source.x = window.innerWidth;
+
+    [raysCanvas, dustCanvas].forEach((canvas) => {
+      setCanvasDimensions(canvas);
+    });
+  });
+
+  [raysCanvas, dustCanvas].forEach((canvas) => {
+    setCanvasDimensions(canvas);
+  });
+
+  while (rays.length < raysCounter) createRay();
+  while (dusts.length < dustsCounter) createDust();
+
   animate();
 </script>
