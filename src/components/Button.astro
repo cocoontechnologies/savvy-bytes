@@ -1,3 +1,57 @@
-<button class="project-button text-base py-2 px-6 rounded-md text-secondary bg-gradient-to-b from-[#5B8FF3] to-[#2D74F3] shadow-[0_20px_50px_#2D74F330] cursor-pointer">
-    <slot />
+<button
+  id="hero-button"
+  class="relative project-button text-base py-2 px-6 rounded-md text-secondary bg-gradient-to-b from-[#5B8FF3] to-[#2D74F3] shadow-[0_20px_50px_#2D74F330] cursor-pointer flex justify-center items-center"
+>
+  <slot />
+  <div
+    id="hero-button-frames"
+    class="absolute inset-0 w-full h-full p-[1px] pointer-events-none rounded-xl"
+  >
+    <div class="hero-button-frame absolute aspect-square"></div>
+  </div>
 </button>
+
+<style>
+  #hero-button-frames {
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+  }
+
+  .hero-button-frame {
+    background: conic-gradient(#2D74F3, transparent 75%);
+    animation: rotate 5s linear infinite;
+  }
+
+  @keyframes rotate {
+    0% {
+      transform: rotate(0);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+</style>
+
+<script>
+  const button = document.querySelector("#hero-button") as HTMLButtonElement;
+  const buttonFrames = document.querySelector(
+    "#hero-button-frames"
+  ) as HTMLDivElement;
+  const buttonFrame = document.querySelector(
+    ".hero-button-frame"
+  ) as HTMLDivElement;
+
+  const PAD = 24;
+
+  buttonFrames.style.width = `${button.clientWidth + PAD}px`;
+  buttonFrames.style.height = `${button.clientHeight + PAD}px`;
+  buttonFrames.style.top = `-${PAD / 2}px`;
+  buttonFrames.style.left = `-${PAD / 2}px`;
+
+  buttonFrame.style.width = `${buttonFrames.clientWidth * 2}px`;
+  buttonFrame.style.top = `-${buttonFrame.clientHeight * 0.40}px`;
+  buttonFrame.style.left = `-${buttonFrame.clientWidth * 0.25}px`;
+</script>
