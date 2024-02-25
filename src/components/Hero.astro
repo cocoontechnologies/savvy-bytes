@@ -2,19 +2,20 @@
 import Button from "./Button.astro";
 ---
 
+<canvas
+  id="dust"
+  class="w-full h-screen absolute inset-0 pointer-events-none mix-blend-screen"
+></canvas>
+
+<canvas
+  id="rays"
+  class="w-full h-screen absolute bg-gradient-to-bl from-white/20 from-0% to-transparent to-35% pointer-events-none blur-md overflow-hidden scale-110"
+></canvas>
+
 <div
   id="home"
   class="flex flex-col items-center justify-center min-h-[80vh] gap-12 relative pt-28"
 >
-  <canvas
-    id="dust"
-    class="w-full h-screen absolute inset-0 pointer-events-none mix-blend-screen"
-  ></canvas>
-  <canvas
-    id="rays"
-    class="w-full h-screen absolute inset-0 scale-110 bg-gradient-to-bl from-white/20 from-0% to-transparent to-35% pointer-events-none blur-md"
-  ></canvas>
-
   <div
     class="flex flex-col font-lexend font-bold text-6xl items-center text-center"
   >
