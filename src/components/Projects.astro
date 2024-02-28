@@ -30,9 +30,9 @@ import { projects } from "./../data/projects.js";
   id="projects"
   class="flex flex-col justify-end min-h-screen items-center -scroll-mt-10 relative"
 >
-  <div class="hidden mask-to-r absolute top-0 bottom-0 left-0 w-64 bg-gradient-to-r from-primary backdrop-blur-sm z-[50]"></div>
+  <div class="xl:block hidden mask-to-r absolute top-0 bottom-0 left-0 w-64 bg-gradient-to-r from-primary backdrop-blur-sm z-[50]"></div>
 
-  <div class="hidden mask-to-l absolute top-0 bottom-0 right-0 w-64 bg-gradient-to-l from-primary backdrop-blur-sm z-[50]"></div>
+  <div class="xl:block hidden mask-to-l absolute top-0 bottom-0 right-0 w-64 bg-gradient-to-l from-primary backdrop-blur-sm z-[50]"></div>
 
   <div class="container-snap flex items-center gap-5 p-5 px-5 xl:px-64 w-full overflow-auto snap-x">
     {projects.map((project, index) => <ProjectCard project={project} />)}

@@ -6,9 +6,8 @@ export const projects = [
         tags: ['shopify'],
         description: "This design showcases the user journey within Company X's ride-hailing app, simplifying your understanding of the entire process. Dive into an effortless flow, starting with a smooth login, followed by a clear and concise onboarding process that guides you on app navigation and functionality. Discover how to effortlessly.",
         images: [
-            'test-1.s',
-            'test-2.s',
-            'test-1.s',
+            'rabbies1.webp',
+            'rabbies2.webp',
         ]
     },
 
@@ -19,9 +18,10 @@ export const projects = [
         tags: ['laravel'],
         description: "This design showcases the user journey within Company X's ride-hailing app, simplifying your understanding of the entire process. Dive into an effortless flow, starting with a smooth login, followed by a clear and concise onboarding process that guides you on app navigation and functionality. Discover how to effortlessly.",
         images: [
-            'test-1.s',
-            'test-2.s',
-            'test-1.s',
+            'bsys1.webp',
+            'bsys2.webp',
+            'bsys3.webp',
+            'bsys4.webp',
         ]
     },
 
@@ -32,9 +32,10 @@ export const projects = [
         tags: ['react.js'],
         description: "This design showcases the user journey within Company X's ride-hailing app, simplifying your understanding of the entire process. Dive into an effortless flow, starting with a smooth login, followed by a clear and concise onboarding process that guides you on app navigation and functionality. Discover how to effortlessly.",
         images: [
-            'test-1.s',
-            'test-2.s',
-            'test-1.s',
+            'dmrs1.webp',
+            'dmrs2.webp',
+            'dmrs3.webp',
+            'dmrs4.webp',
         ]
     },
 ]

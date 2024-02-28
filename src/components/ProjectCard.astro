@@ -4,10 +4,10 @@ const { project } = Astro.props;
 ---
 
 <div id=`${project.id}` class="w-[90vw] h-[70vh] project-card flex flex-col bg-black/20 border border-secondary/20 rounded-3xl snap-center overflow-y-clip xl:flex-row xl:scale-y-95 xl:h-[75vh] xl:transition-[height] xl:min-w-[calc(100%)] xl:w-[calc(100vh-256px)] xl:duration-1000">
-	<div class="flex flex-1 flex-col p-6 gap-3 xl:p-12 xl:gap-6">
+	<div class="flex flex-1 flex-col p-6 gap-3 xl:p-12 xl:gap-6 transition-none">
 		<h2 class="text-2xl xl:text-6xl font-bold font-lexend">{project.title}</h2>
 
-		<div class="flex gap-2">
+		<div class="flex gap-2 transition-none">
 			{
 				project.tags?.map((tag) => (
 					<Badge label={tag}/>
@@ -18,11 +18,11 @@ const { project } = Astro.props;
 		<p class="text-xs xl:text-base text-secondary/50">{project.description}</p>
 	</div>
 
-	<div class="flex flex-col xl:w-1/2 h-full w-full p-6 xl:p-12 overflow-auto gap-3">
+	<div class="flex flex-col xl:w-1/2 h-full w-full p-6 xl:p-12 overflow-auto gap-3 transition-none">
 		{
 			project.images?.map((image) => (
-				<div class="flex min-h-[30vh] xl:min-h-[45%] rounded-md overflow-clip aspect-video bg-red-500">
-					<img class="object-cover w-full" src={`/images/${image}`} alt="" />
+				<div class="flex min-h-[30vh] xl:min-h-[45%] rounded-md overflow-clip aspect-video bg-white transition-none">
+					<img class="object-cover w-full transition-none bg-white" src={`/images/${image}`} alt="" />
 				</div>
 			))
 		}
