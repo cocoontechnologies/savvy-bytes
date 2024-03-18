@@ -30,23 +30,15 @@ import { projects } from "./../data/projects.js";
   id="projects"
   class="flex flex-col justify-end min-h-screen items-center -scroll-mt-10 relative"
 >
-  <div
-    class="mask-to-r absolute top-0 bottom-0 left-0 w-[256px] bg-gradient-to-r from-primary backdrop-blur-sm z-[50]"
-  >
-  </div>
+  <div class="xl:block hidden mask-to-r absolute top-0 bottom-0 left-0 w-64 bg-gradient-to-r from-primary backdrop-blur-sm z-[50]"></div>
 
-  <div
-    class="mask-to-l absolute top-0 bottom-0 right-0 w-[256px] bg-gradient-to-l from-primary backdrop-blur-sm z-[50]"
-  >
-  </div>
+  <div class="xl:block hidden mask-to-l absolute top-0 bottom-0 right-0 w-64 bg-gradient-to-l from-primary backdrop-blur-sm z-[50]"></div>
 
-  <div
-    class="container-snap flex items-center gap-5 p-5 px-[256px] w-full overflow-auto snap-x"
-  >
+  <div class="container-snap flex items-center gap-5 p-5 px-5 xl:px-64 w-full overflow-auto snap-x">
     {projects.map((project, index) => <ProjectCard project={project} />)}
   </div>
 
-  <div class="flex gap-3">
+  <div class="hidden xl:flex gap-3">
     {
       projects.map((project, index) => (
         <ProjectButton label={project.label} dataId={project.id} />
@@ -100,6 +92,9 @@ import { projects } from "./../data/projects.js";
   });
 
   containerSnap.addEventListener("scrollend", (e) => {
+
+    if(window.innerWidth < 1280) return;
+
     const buttonxArray = projectCardsArray.map(
       (projectCard) => projectCard.getBoundingClientRect().x
     );
@@ -119,15 +114,16 @@ import { projects } from "./../data/projects.js";
     selectedProject.classList.add("active-project");
   });
 
-  containerSnap.addEventListener(
-    "scroll",
-    (e) => {
-      toggleDisableButtons(true);
+  containerSnap.addEventListener("scroll", (e) => {
+        if(window.innerWidth < 1280) return;
+        toggleDisableButtons(true);
     },
     { passive: true }
   );
 
   window.addEventListener("load", () => {
+    if(window.innerWidth < 1280) return;
+
     setActiveProject(projectCardsArray[0]);
     projectCardsArray[0].classList.add("!h-[80vh]");
     projectCardsArray[0].classList.add("active-project");
