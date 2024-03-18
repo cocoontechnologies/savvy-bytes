@@ -50,13 +50,13 @@ import Button from "./Button.astro";
 
   const raysCanvas = document.querySelector("#rays") as HTMLCanvasElement,
     raysCtx = raysCanvas.getContext("2d"),
-    raysCounter = 64,
-    step = 0.001,
+    raysCounter = 32,
+    step = 0.005,
     rays: Array<Ray> = [];
 
   const dustCanvas = document.querySelector("#dust") as HTMLCanvasElement,
     dustCtx = dustCanvas.getContext("2d"),
-    dustsCounter = 256,
+    dustsCounter = 128,
     dusts: Array<Dust> = [];
 
   const source = {
@@ -76,8 +76,8 @@ import Button from "./Button.astro";
 
   /* =================== Ray methods =================== */
   function createRay() {
-    const x = Math.floor(getRandomInt(-1920, 1920) * Math.random()),
-      y = Math.floor(1920 * Math.random() + 1024),
+    const x = Math.floor(getRandomInt(-1920, 1080) * Math.random()),
+      y = Math.floor(1920 * Math.random() + 512),
       width = Math.floor(Math.random() * 256);
 
     rays.push({
